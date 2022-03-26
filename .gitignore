@@ -1,9 +1,5 @@
-
-dataverse_files/~$taset Description - Brexit.docx
 dataverse_files.zip
-dataverse_files/Dataset Description - Brexit.docx
-dataverse_files/tweets_stance_sentiment_1outof4.csv
-dataverse_files/tweets_stance_sentiment_2outof4.csv
-dataverse_files/tweets_stance_sentiment_3outof4.csv
-dataverse_files/tweets_stance_sentiment_4outof4.csv
-dataverse_files/users_stance_sentiment_botscore_tweetcounts.csv
+dataverse_files/*
+twitter_creds.py
+TA_ENV/*
+__pycache__/*
