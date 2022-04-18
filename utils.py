@@ -10,6 +10,20 @@ import emoji
 import spacy
 from spacytextblob.spacytextblob import SpacyTextBlob
 
+from transformers import AutoModelForSequenceClassification
+from transformers import TFAutoModelForSequenceClassification
+from transformers import AutoTokenizer
+from scipy.special import softmax
+
+
+task = 'sentiment'
+MODEL = f"cardiffnlp/twitter-roberta-base-{task}"
+tokenizer = AutoTokenizer.from_pretrained(MODEL)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+model.save_pretrained(MODEL)
+tokenizer.save_pretrained(MODEL)
+
+
 lemmatizer = WordNetLemmatizer()
 stop_words = set(stopwords.words('english'))
 nlp = spacy.load('en_core_web_sm')
@@ -105,11 +119,21 @@ def detect_sentiment_spacy(sentence):
     doc = nlp(sentence)
     return doc._.blob.polarity
 
+def hugging_sentiment_scores(sentence):
+    encoded_input = tokenizer(sentence, return_tensors='pt')
+    output = model(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    scores = list(softmax(scores))
+    max_value = max(scores)
+    return -max_value if scores.index(max_value) == 2 else max_value
+
+
+
 def detect_emoji_sentiment(value):
     emojis = value.split("|")
     result = 0
     for emo in emojis:
         if emo in target_emoji_list:
-            sentiment_score = list(emoticons_df[emoticons_df["Unicode"] == emo.lower()]["Sentiment score\n[-1...+1]"])[0]
+            sentiment_score = list(emoticons_df[emoticons_df["Unicode"] == emo.lower()]["Sentiment score\r\n[-1...+1]"])[0]
             result += sentiment_score
     return result/len(emojis)

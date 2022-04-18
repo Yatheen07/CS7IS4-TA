@@ -70,7 +70,7 @@ sia = SentimentIntensityAnalyzer()
 # tweets_df['nltk_neutral_score']=tweets_df['PROCESSED_TWEET'].apply(lambda x : sia.polarity_scores(x)['neu'])
 tweets_df['nltk_aggregated_score']=tweets_df['PROCESSED_TWEET'].apply(lambda x : sia.polarity_scores(x)['compound'])
 tweets_df['spacy_aggregated_score']=tweets_df['PROCESSED_TWEET'].apply(lambda x : detect_sentiment_spacy(x))
-# tweets_df['hugging_face_score']=tweets_df['PROCESSED_TWEET'].apply(lambda x : sia.polarity_scores(x)['neu'])
+tweets_df['hugging_face_score']=tweets_df['PROCESSED_TWEET'].apply(lambda x : hugging_sentiment_scores(x))
 
 # tweets_df['delta']=tweets_df['TARGET_EMOJIS_LIST'].apply(lambda x : detect_emoji_sentiment(x))
 print(tweets_df.head(10))
@@ -82,11 +82,20 @@ tweets_df['emoji_score']=tweets_df['TARGET_EMOJIS_LIST'].apply(lambda x : detect
 #STEP 4: DETERMINE THE DELTA
 tweets_df['delta_nltk']= abs(tweets_df['nltk_aggregated_score'] - tweets_df['emoji_score'])
 tweets_df['delta_spacy']= abs(tweets_df['spacy_aggregated_score'] - tweets_df['emoji_score'])
+tweets_df['delta_hugging_face']= abs(tweets_df['hugging_face_score'] - tweets_df['emoji_score'])
 
 tweets_df.to_csv("chec_this.csv")
 
 #STEP 5: PLOT THE DELTA VALUES TO DETERMINE THE THRESHOLD
 import matplotlib.pyplot as plt
-tweets_df['delta_nltk'].hist()
-tweets_df['delta_spacy'].hist()
+tweets_df[['delta_nltk','delta_spacy','delta_hugging_face']].plot.hist(stacked=True,histtype = 'step', fill = None)
+plt.xlabel('Therehold')
+plt.ylabel('Frequency')
+plt.show()
+
+# PLOT VERSION2
+import matplotlib.pyplot as plt
+tweets_df[['delta_nltk','delta_spacy','delta_hugging_face']].plot.hist(stacked=True,alpha=0.7)
+plt.xlabel('Therehold')
+plt.ylabel('Frequency')
 plt.show()
