@@ -84,18 +84,25 @@ tweets_df['delta_nltk']= abs(tweets_df['nltk_aggregated_score'] - tweets_df['emo
 tweets_df['delta_spacy']= abs(tweets_df['spacy_aggregated_score'] - tweets_df['emoji_score'])
 tweets_df['delta_hugging_face']= abs(tweets_df['hugging_face_score'] - tweets_df['emoji_score'])
 
-tweets_df.to_csv("chec_this.csv")
+tweets_df.to_csv("delta.csv")
 
 #STEP 5: PLOT THE DELTA VALUES TO DETERMINE THE THRESHOLD
 import matplotlib.pyplot as plt
-tweets_df[['delta_nltk','delta_spacy','delta_hugging_face']].plot.hist(stacked=True,histtype = 'step', fill = None)
-plt.xlabel('Therehold')
+tweets_df[['delta_nltk','delta_spacy','delta_hugging_face']].plot.hist(histtype = 'step', fill = None)
+plt.xlabel('Delta Sentiment Score')
 plt.ylabel('Frequency')
 plt.show()
 
+
+# import matplotlib.pyplot as plt
+# tweets_df['delta_hugging_face'].plot.hist(histtype = 'step', fill = None)
+# plt.xlabel('Delta Sentiment Score')
+# plt.ylabel('Frequency')
+# plt.show()
+
 # PLOT VERSION2
 import matplotlib.pyplot as plt
-tweets_df[['delta_nltk','delta_spacy','delta_hugging_face']].plot.hist(stacked=True,alpha=0.7)
-plt.xlabel('Therehold')
+tweets_df[['delta_nltk','delta_spacy','delta_hugging_face']].plot.hist(alpha=0.7)
+plt.xlabel('Delta Sentiment Score')
 plt.ylabel('Frequency')
 plt.show()
