@@ -33,7 +33,7 @@ target_emoji_list = [
 ]
 dbConnection = sqlite3.connect('datasets/tweets-final.db')
 cursor = dbConnection.execute('CREATE TABLE TWEETS(TWEET_ID VARCHAR2(100), USER_ID VARCHAR2(100), TWEET VARCHAR(400),EMOJI VARCHAR(100),TWEET_SENTIMENT VARCHAR(10))')
-dbNames = ['datasets/tweets-1.db','datasets/tweets-2.db']
+dbNames = ['datasets/tweets-1.db','datasets/tweets-2.db','datasets/tweets-4.db']
 for dbName in dbNames:
     con = sqlite3.connect(dbName)
     cursor_obj = con.cursor()
@@ -60,7 +60,7 @@ tweets_df.loc[:, 'PROCESSED_TWEET'] = 0
 tweets_df.loc[:, 'TARGET_EMOJIS_LIST'] = 0
 
 process_tweets(tweets_df,target_emoticons)
-
+print(f"[INFO] SIZE OF THE DATABASE AFTER PROCESSING IS {len(tweets_df)}.")
 
 #STEP 2: DERIVE AGGREGATED TEXT SENTIMENT FROM THREE MODELS
 from nltk.sentiment import SentimentIntensityAnalyzer
