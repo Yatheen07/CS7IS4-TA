@@ -88,11 +88,19 @@ def clean_tweet(str,target_emoticons):
     pos_tagged = pos_tag(tokenized_text)
     # lemmatization
     tokenized_text = words_lemmatization(pos_tagged)
-    # demojize if not in high sentiment list
-    demojized_text = ' '.join([emoji.demojize(c) for c in tokenized_text if
-                               c not in target_emoticons])
+    # demojize if not in target emojis list
+    demojized_text = []
+    for t in tokenized_text:
+        if emoji.is_emoji(t):
+            e = '0x{:X}'.format(ord(t))
+            if e.lower() not in target_emoticons:
+                demojized_text.append(emoji.demojize(t))
+        else:
+            demojized_text.append(t)
+    # remove target emoticons
+    pure_text = ' '.join([t for t in demojized_text])
     # remove punctuation
-    str = re.sub(r'[^\w\s]', '', demojized_text)
+    str = re.sub(r'[^\w\s]', '', pure_text)
     return str
 
 
