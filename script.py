@@ -33,7 +33,7 @@ target_emoji_list = [
 ]
 dbConnection = sqlite3.connect('datasets/tweets-final.db')
 cursor = dbConnection.execute('CREATE TABLE TWEETS(TWEET_ID VARCHAR2(100), USER_ID VARCHAR2(100), TWEET VARCHAR(400),EMOJI VARCHAR(100),TWEET_SENTIMENT VARCHAR(10))')
-dbNames = ['datasets/tweets-1.db','datasets/tweets-2.db','datasets/tweets-4.db']
+dbNames = ['datasets/tweets-1.db','datasets/tweets-2.db','datasets/tweets-3.db','datasets/tweets-4.db']
 for dbName in dbNames:
     con = sqlite3.connect(dbName)
     cursor_obj = con.cursor()
